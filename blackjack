@@ -1,1 +1,12 @@
-sources/main.rb
+#!/usr/bin/env ruby
+
+require_relative "sources/game"
+
+def main
+    black_jack = Game.new :money => 10000, :mise => 5
+    while black_jack.has_player
+        black_jack.play
+    end
+end
+
+main
