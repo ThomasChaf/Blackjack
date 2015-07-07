@@ -1,7 +1,7 @@
 class Cart
 
-    def initialize
-        @name = Random.rand 1..13
+    def initialize name = Random.rand(1..13)
+        @name = name
         @value = {
             1 => 1,
             2 => 2,

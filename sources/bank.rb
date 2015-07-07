@@ -4,17 +4,22 @@ require_relative "cart"
 class Bank < Human
 
     def initialize
-        puts 'bank'
         super
     end
 
+    def score
+        hand.score
+    end
+
+    def visible_cart
+        @hand.carts.first
+    end
+
     def play
-        puts "Bank receive #{ @hand.to_s }"
-        while score < 17
-            c = Cart.new
-            puts "  Bank add #{ c.to_s }"
-            @hand << c
+        while @hand.score < 17
+            @hand << self.hit_card
+            puts "Bank hit #{hand.to_s}"
         end
-        puts "Bank end #{ score }"
+        puts "Bank end #{ hand.score }"
     end
 end

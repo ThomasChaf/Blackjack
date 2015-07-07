@@ -1,8 +1,21 @@
 class Hand
 
-    def initialize
-        puts "hand"
+    def initialize *args
+        @mise = 0
         @carts = []
+        if !args.empty?
+            args.each do |arg|
+                @carts << arg
+            end
+        end
+    end
+
+    def set_mise mise
+        @mise = mise
+    end
+
+    def mise
+        @mise
     end
 
     def score
@@ -30,27 +43,33 @@ class Hand
         false
     end
 
-    def eql?(cart_describer)
-        if !cart_describer.class.name == ((is_pair || (has_as && @carts.length == 2)) ? "Array" : "Fixnum")
-            return false
-        end
-        if is_pair || has_as
-            cart_describer[0] == @carts[0].value && cart_describer[1] == @carts[1].value
+    def eql?(carts)
+        if is_pair || (has_as && @carts.length == 2)
+            (carts[0] == @carts[0].value && carts[1] == @carts[1].value) || (carts[0] == @carts[1].value && carts[1] == @carts[0].value)
         else
-            score == cart_describer
+            score == carts
         end
     end
 
     def to_s
-        if @carts.length == 2
-            "#{ @carts[0].to_s } - #{ @carts[1].to_s }"
+        if @carts.length == 4
+            "[4:] #{ @carts[0].to_s } - #{ @carts[1].to_s } - #{ @carts[2].to_s } - #{ @carts[3].to_s }"
+        elsif @carts.length == 3
+            "[3:] #{ @carts[0].to_s } - #{ @carts[1].to_s } - #{ @carts[2].to_s }"
+        elsif @carts.length == 2
+            "[2:] #{ @carts[0].to_s } - #{ @carts[1].to_s }"
         else
-            "#{ @carts[0].to_s }"
+            "[1:] #{ @carts[0].to_s }"
         end
     end
 
     def clean
+        @mise = 0
         @carts.clear
+    end
+
+    def carts
+        @carts
     end
 
     def << cart

@@ -3,10 +3,19 @@
 require_relative "sources/game"
 
 def main
-    black_jack = Game.new :money => 10000, :mise => 5
-    while black_jack.has_player
+    round = 0
+    black_jack = Game.new :money => 10000, :nb_deck => 6
+    while !black_jack.end?
+        puts "=== ROUND === #{ round }"
+        black_jack.deal
         black_jack.play
+        round += 1
     end
 end
 
+# begin
 main
+# rescue Exception => error
+#     puts error.message
+#
+# end
