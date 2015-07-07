@@ -21,13 +21,13 @@ class Game
     end
 
     def deal
+        @player.mise
         @player.hand << @player.hit_card
         @player.hand << @player.hit_card
         @bank.hand << @bank.hit_card
     end
 
     def play
-        @player.mise
         if @player.play(@bank.visible_cart.value) != :abandon
             @bank.play
             @player.get_price @bank.score

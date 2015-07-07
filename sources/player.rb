@@ -12,16 +12,19 @@ class Player < Human
         super
     end
 
-    def mise
-        mise = @brain.mise
-        puts "Player mise $#{ mise }"
+    def send_mise hand, mise
         @money -= mise
-        @hand.set_mise mise
+        hand.set_mise mise
+        puts "Player mise $#{ mise }: TOTAL [$#{@money}]"
+    end
+
+    def mise
+        send_mise @hand, @brain.mise
     end
 
     def hit hand
-        hand << self.hit_card
         puts "Player hit #{hand.to_s}"
+        hand << self.hit_card
     end
 
     def abandon hand
@@ -34,19 +37,20 @@ class Player < Human
     end
 
     def double hand
+        puts "Player double"
         @double = true
-        @money -= hand.mise
+        send_mise hand, hand.mise
         hand << self.hit_card
-        puts "Player double #{ hand }"
+        puts "     #{ hand }"
     end
 
     def split hand
+        puts "Player split"
         @split = true
-        @money -= hand.mise
+        send_mise hand, hand.mise
         @hand = Hand.new hand.carts[0], self.hit_card
         @hand_split = Hand.new hand.carts[1], self.hit_card
         each_hand { |h| h.set_mise hand.mise }
-        puts "Player split"
         puts "    #{@hand.to_s}"
         puts "    #{@hand_split.to_s}"
     end
@@ -63,7 +67,7 @@ class Player < Human
         if action == "double" || action == "split"
             action = "hit"
         elsif action == "abandon"
-            action = "stand"
+            action = "hit"
         end
         self.send action, hand
         action == "hit"
@@ -110,20 +114,27 @@ class Player < Human
     end
 
     def win hand, value=1
+        puts "WIN #{hand.mise} * #{value}: #{@money}"
         @money += (hand.mise * value)
     end
 
-    def get_price bank_score
-        each_hand do |hand|
-            break if hand.score > 21
+    def get_price_for_hand bank_score, hand
+        puts "#{hand.score} VS #{bank_score}"
+        return if hand.score > 21
 
-            if hand.score == bank_score
-                win hand
-            elsif hand.is_blackjack
-                win hand, 2.5
-            elsif bank_score > 21 || hand.score > bank_score
-                win hand, 2 * (@double ? 2 : 1)
-            end
+        if hand.score == bank_score
+            win hand
+        elsif hand.is_blackjack
+            win hand, 2.5
+        elsif bank_score > 21 || hand.score > bank_score
+            win hand, 2 * (@double ? 2 : 1)
+        end
+    end
+
+    def get_price bank_score
+        get_price_for_hand bank_score, @hand
+        if @split
+            get_price_for_hand bank_score, @hand_split
         end
     end
 

@@ -34,7 +34,9 @@ class Brain
 
     def mise
         if self.real_count >= 3
-            (self.real_count - 2) * @unit_mise
+            (self.real_count - 1) * @unit_mise
+        elsif self.real_count <= -2
+            @unit_mise / 2
         else
             @unit_mise
         end

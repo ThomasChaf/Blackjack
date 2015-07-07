@@ -11,7 +11,7 @@ class Hand
     end
 
     def set_mise mise
-        @mise = mise
+        @mise += mise
     end
 
     def mise
@@ -20,8 +20,16 @@ class Hand
 
     def score
         score = 0
+        as = 0
         @carts.each do |cart|
+            if cart.value == 1
+                as += 1
+            end
             score += cart.value
+        end
+        while as > 0 && score + 10 <= 21
+            score += 10
+            as -= 1
         end
         score
     end
