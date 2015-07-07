@@ -38,7 +38,6 @@ class Player < Human
 
     def double hand
         puts "Player double"
-        @double = true
         send_mise hand, hand.mise
         hand << self.hit_card
         puts "     #{ hand }"
@@ -81,7 +80,6 @@ class Player < Human
     end
 
     def play bank_score
-        @double = false
         @split = false
         puts "Player start #{@hand.to_s }: #{@hand.score} against #{ bank_score }"
         first_action = get_action(bank_score, @hand)
@@ -127,7 +125,7 @@ class Player < Human
         elsif hand.is_blackjack
             win hand, 2.5
         elsif bank_score > 21 || hand.score > bank_score
-            win hand, 2 * (@double ? 2 : 1)
+            win hand, 2
         end
     end
 

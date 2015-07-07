@@ -17,7 +17,7 @@ class Game
     end
 
     def end?
-        @player.money <= 0
+        @player.money <= 0 || @player.money > 100000
     end
 
     def deal
