@@ -9,7 +9,7 @@ A black jack simulator
 - Double after split : not allowed
 - Soft 17 : Dealer hits
 - Surrender : Allowed
-- 
+
 ## Configurable
 
 - Nb deck (default 6)
