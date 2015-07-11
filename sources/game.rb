@@ -21,7 +21,8 @@ class Game
     end
 
     def deal
-        @player.mise
+        @player.mise @player.brain.mise
+
         @player.hand << @player.hit_card
         @player.hand << @player.hit_card
         @bank.hand << @bank.hit_card

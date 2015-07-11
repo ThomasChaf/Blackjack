@@ -1,7 +1,7 @@
-require_relative "human"
-require_relative "brain"
-require_relative "cart"
-require "json"
+require_relative 'human'
+require_relative 'brain'
+require_relative 'cart'
+require 'json'
 
 class Player < Human
 
@@ -12,14 +12,10 @@ class Player < Human
         super
     end
 
-    def send_mise hand, mise
-        @money -= mise
-        hand.set_mise mise
-        puts "Player mise $#{ mise }: TOTAL [$#{@money}]"
-    end
-
-    def mise
-        send_mise @hand, @brain.mise
+    def mise amount, hand = @hand
+        @money -= amount
+        hand.set_mise amount
+        puts "Player mise $#{ amount }: TOTAL [$#{@money}]"
     end
 
     def hit hand
@@ -38,7 +34,7 @@ class Player < Human
 
     def double hand
         puts "Player double"
-        send_mise hand, hand.mise
+        mise hand.mise, hand
         hand << self.hit_card
         puts "     #{ hand }"
     end
@@ -46,7 +42,7 @@ class Player < Human
     def split hand
         puts "Player split"
         @split = true
-        send_mise hand, hand.mise
+        mise hand.mise, hand
         @hand = Hand.new hand.carts[0], self.hit_card
         @hand_split = Hand.new hand.carts[1], self.hit_card
         each_hand { |h| h.set_mise hand.mise }

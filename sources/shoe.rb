@@ -4,9 +4,6 @@ class Deck
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map do |value|
             4.times.map { Cart.new(value) }
         end
-        # [7, 1, 10, 8, 10, 9].map do |value|
-        #     Cart.new(value)
-        # end
     end
 
 end

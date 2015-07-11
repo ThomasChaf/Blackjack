@@ -27,7 +27,6 @@ class Brain
         if cart.nil?
             @count = 0
         else
-            puts "Brain see: #{ cart.value } TOTAL:[#{real_count}]"
             @count += Brain.HILO(cart.value)
         end
     end
@@ -45,6 +44,5 @@ class Brain
     def real_count
         @count / @nb_deck
     end
-
 
 end
